@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viralium VPN | Premium Güvenlik</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Exact logo colors */
+            --bg: #020408;                          /* Pure near-black like logo bg */
+            --surface: #060e1a;                     /* Very dark navy surface */
+            --shield-body: #0d2255;                 /* Shield inner fill - deep navy */
+            --shield-border: #1a6dc9;              /* Shield inner border line */
+            --orbit-deep: #1a5eb8;                 /* Orbital ring dark */
+            --orbit-bright: #22b4ff;               /* Orbital ring bright cyan */
+            --accent: #22b4ff;                     /* Primary accent = orbit bright cyan */
+            --accent-mid: #1a8de0;                 /* Mid blue */
+            --accent-deep: #1a6dc9;                /* Shield border blue */
+            --v-left: #7ab8e8;                     /* V letter left (darker side) */
+            --v-right: #e8f4ff;                    /* V letter right (icy white highlight) */
+            --text-main: #c8dce8;
+            --text-dim: #5a7a96;
+            --border: #0f1e35;
+            --green: #00e5a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Deep ambient glow - mimics the logo's outer glow on black */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            height: 60%;
+            background: radial-gradient(ellipse at center, rgba(26, 109, 201, 0.07) 0%, rgba(34, 180, 255, 0.03) 30%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 6%;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(2, 4, 8, 0.94);
+            backdrop-filter: blur(16px);
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            font-size: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 5px rgba(34,180,255,0.45));
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--green);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 6% 60px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-label {
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        /* Hero logo with orbital ring effect recreated via CSS */
+        .hero-logo-wrap {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Outer orbital ring - mimics the logo's orbit */
+        .orbital-ring {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(68deg) rotateZ(-15deg);
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: conic-gradient(
+                from 180deg,
+                transparent 0deg,
+                transparent 60deg,
+                rgba(34,180,255,0.0) 80deg,
+                rgba(26,93,184,0.6) 140deg,
+                rgba(34,180,255,0.9) 200deg,
+                rgba(26,93,184,0.7) 260deg,
+                rgba(34,180,255,0.1) 300deg,
+                transparent 340deg,
+                transparent 360deg
+            );
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), black calc(100% - 2px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), black calc(100% - 2px));
+            animation: orbitSpin 8s linear infinite;
+            filter: drop-shadow(0 0 4px rgba(34,180,255,0.3));
+            pointer-events: none;
+        }
+
+        @keyframes orbitSpin {
+            to { transform: translate(-50%, -50%) rotateX(68deg) rotateZ(345deg); }
+        }
+
+        .hero-logo {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 0 20px rgba(34,180,255,0.3)) drop-shadow(0 0 60px rgba(26,109,201,0.12));
+            animation: heroLogoFloat 5s ease-in-out infinite;
+        }
+
+        @keyframes heroLogoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-5px); }
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 900;
+            line-height: 0.95;
+            margin: 0 0 40px 0;
+            letter-spacing: -4px;
+            /* Mimics the V letter gradient: dark icy blue left → white right */
+            background: linear-gradient(135deg, var(--v-left) 0%, #b8daf0 35%, var(--v-right) 60%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            max-width: 700px;
+            margin: 0 auto 60px;
+            font-size: 1.35rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        /* ===== VALUE CARDS ===== */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            max-width: 1200px;
+            margin: 100px auto;
+            padding: 0 6%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .value-card {
+            text-align: left;
+            padding: 34px 30px;
+            /* Shield body color as card bg */
+            background: linear-gradient(160deg, rgba(13,34,85,0.45) 0%, rgba(6,14,26,0.7) 100%);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top edge glow like shield border */
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 5%, var(--accent-deep) 30%, var(--accent) 50%, var(--accent-deep) 70%, transparent 95%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .value-card:hover::before { opacity: 1; }
+
+        .value-card:hover {
+            border-color: rgba(34,180,255,0.2);
+            box-shadow: 0 8px 40px rgba(26,93,184,0.15), inset 0 1px 0 rgba(34,180,255,0.06);
+            transform: translateY(-3px);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .value-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .value-card p {
+            font-size: 1rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* ===== SPECS SECTION ===== */
+        .specs-section {
+            /* Shield body gradient across the band */
+            background: linear-gradient(180deg, rgba(13,34,85,0.18) 0%, rgba(6,14,26,0.5) 50%, rgba(13,34,85,0.12) 100%);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 80px 6%;
+            margin: 100px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .specs-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(26,109,201,0.05) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .specs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .specs-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-align: center;
+            letter-spacing: -1px;
+            color: #fff;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .spec-item {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 16px;
+            background: rgba(13,34,85,0.25);
+            border: 1px solid var(--border);
+            transition: border-color 0.35s, box-shadow 0.35s, background 0.35s;
+            position: relative;
+        }
+
+        .spec-item:hover {
+            border-color: rgba(34,180,255,0.22);
+            box-shadow: 0 4px 28px rgba(26,93,184,0.13);
+            background: rgba(13,34,85,0.38);
+        }
+
+        .spec-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+            /* V-letter style glossy gradient */
+            background: linear-gradient(135deg, var(--v-left) 0%, #d4eaf8 40%, var(--v-right) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .spec-label {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== DOWNLOAD SECTION ===== */
+        .download-section {
+            max-width: 1000px;
+            margin: 120px auto;
+            padding: 0 6%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .download-section h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            color: #fff;
+        }
+
+        .download-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .download-box {
+            /* Shield body as download box bg */
+            background: linear-gradient(155deg, rgba(13,34,85,0.5) 0%, rgba(6,14,26,0.85) 60%, rgba(13,34,85,0.3) 100%);
+            border: 1px solid rgba(26,109,201,0.25);
+            border-radius: 24px;
+            padding: 50px;
+            display: inline-block;
+            min-width: 500px;
+            transition: border-color 0.35s ease, box-shadow 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Shield border line effect on top */
+        .download-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 8%; right: 8%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-deep), var(--accent), var(--accent-deep), transparent);
+            opacity: 0.7;
+        }
+
+        .download-box:hover {
+            border-color: rgba(34,180,255,0.35);
+            box-shadow: 0 12px 60px rgba(26,93,184,0.15);
+        }
+
+        .platform-selector {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 35px;
+        }
+
+        .platform-btn {
+            padding: 12px 24px;
+            background: rgba(13,34,85,0.35);
+            border: 1px solid rgba(26,109,201,0.2);
+            border-radius: 12px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .platform-btn:hover {
+            background: rgba(13,34,85,0.55);
+            color: var(--text-main);
+            border-color: rgba(34,180,255,0.3);
+        }
+
+        .platform-btn.active {
+            background: rgba(26,109,201,0.25);
+            border-color: rgba(34,180,255,0.5);
+            color: #fff;
+            box-shadow: 0 0 16px rgba(34,180,255,0.12), inset 0 1px 0 rgba(34,180,255,0.1);
+        }
+
+        /* Download button - glossy like the V letter sheen */
+        .btn-download {
+            background: linear-gradient(135deg, #1a6dc9 0%, #22b4ff 45%, #5ccfff 55%, #22b4ff 100%);
+            color: #fff;
+            padding: 22px 70px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 1.15rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(34,180,255,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Glossy sheen sweep - replicates logo V glossy highlight */
+        .btn-download::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 55%; height: 100%;
+            background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.0) 40%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.0) 60%, transparent 100%);
+            transition: left 0.55s ease;
+        }
+        .btn-download:hover::before { left: 150%; }
+
+        .btn-download:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 45px rgba(34,180,255,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .version-info {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .version-info span {
+            display: flex;
+            align-items: center;
+        }
+
+        /* ===== PRIVACY SECTION ===== */
+        .privacy-section {
+            max-width: 1000px;
+            margin: 120px auto;
+            padding: 0 6%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .privacy-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-align: center;
+            letter-spacing: -1px;
+            color: #fff;
+        }
+
+        .privacy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .privacy-card {
+            text-align: left;
+            padding: 28px 24px;
+            background: rgba(13,34,85,0.2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: border-color 0.35s, box-shadow 0.35s, background 0.35s;
+        }
+
+        .privacy-card:hover {
+            border-color: rgba(34,180,255,0.2);
+            box-shadow: 0 4px 28px rgba(26,93,184,0.1);
+            background: rgba(13,34,85,0.32);
+        }
+
+        .privacy-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .privacy-card p {
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 60px 6%;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .footer-section h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.25s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: #1e3350;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+                letter-spacing: -2px;
+            }
+            .hero-logo { width: 110px; height: 110px; }
+            .hero-logo-wrap { width: 140px; height: 140px; }
+            .orbital-ring { width: 170px; height: 170px; }
+            .download-box {
+                min-width: auto;
+                padding: 35px 25px;
+            }
+            .platform-selector {
+                flex-wrap: wrap;
+            }
+            .value-grid,
+            .specs-grid,
+            .privacy-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">
+        <img class="logo-icon" src="https://i.ibb.co/fV3nrzXR/Chat-GPT-mage-1-ub-2026-08-14-41-Photoroom-1.png" alt="Viralium VPN">
+        Viralium VPN
+    </div>
+    <div class="status">
+        <div class="dot"></div>
+        <span>Global Network Online</span>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-label"></div>
+
+    <div class="hero-logo-wrap">
+        <div class="orbital-ring"></div>
+        <img class="hero-logo" src="https://i.ibb.co/fV3nrzXR/Chat-GPT-mage-1-ub-2026-08-14-41-Photoroom-1.png" alt="Viralium VPN Shield">
+    </div>
+
+    <h1>Viralium<br>VPN</h1>
+    <p class="hero-tagline">
+        Görünmezlik bir hak, karmaşa bir engeldir. Dijital dünyadaki varlığınızı kontrol edin.
+    </p>
+</section>
+
+<!-- DOWNLOAD SECTION -->
+<section class="download-section" style="margin-top: 80px;">
+    <h2></h2>
+    <p class="download-subtitle">
+        
+    </p>
+
+    <div class="download-box">
+        <div class="platform-selector">
+            <button class="platform-btn active" data-platform="Windows X64">Windows X64</button>
+            <button class="platform-btn" data-platform="mac">Windows X86</button>
+            <button class="platform-btn" data-platform="ios">iOS</button>
+            <button class="platform-btn" data-platform="android">Android</button>
+        </div>
+
+        <button class="btn-download" id="downloadBtn">
+            Download for Windows
+        </button>
+
+        <div class="version-info">
+            <span id="versionText">v6.4.1 Build</span>
+            <span>•</span>
+            <span>Stable Release</span>
+            <span>•</span>
+            <span>Installer</span>
+        </div>
+    </div>
+</section>
+
+<!-- VALUE PROPS -->
+<section class="value-grid">
+    <div class="value-card">
+        <div class="value-icon">🔒</div>
+        <h3>Sıfır Bilgi Mimarisi</h3>
+        <p>E-posta veya kayıt gerektirmez. Sistemimiz sizi tanımaz, sadece yetkili bir bağlantı olarak görür.</p>
+    </div>
+
+    <div class="value-card">
+        <div class="value-icon">🇨🇭</div>
+        <h3>İsviçre Standartlı Güvenlik</h3>
+        <p>Verileriniz, yerel regülasyonların ötesinde, en katı gizlilik protokolleri ile korunur.</p>
+    </div>
+
+    <div class="value-card">
+        <div class="value-icon">⚡</div>
+        <h3>Hızdan Taviz Vermez</h3>
+        <p>Güvenlik hızı yavaşlatmaz. Optimize altyapımız bağlantınızı daraltmaz, genişletir.</p>
+    </div>
+</section>
+
+<!-- SPECS SHOWCASE -->
+<section class="specs-section">
+    <div class="specs-container">
+        <h2 class="specs-title">Teknik Özelliker</h2>
+        <div class="specs-grid">
+            <div class="spec-item">
+                <div class="spec-value">256-bit</div>
+                <div class="spec-label">AES Şifreleme</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-value">75+</div>
+                <div class="spec-label">Ülke</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-value">10 Gbps</div>
+                <div class="spec-label">Sunucu Hızı</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-value">24/7</div>
+                <div class="spec-label">Destek</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-value">8</div>
+                <div class="spec-label">Cihaz</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRIVACY DETAILS -->
+<section class="privacy-section">
+    <h2 class="privacy-title">Gizlilik Taahhüdü</h2>
+    <div class="privacy-grid">
+        <div class="privacy-card">
+            <h3>Kayıt Tutulmaz</h3>
+            <p>Bağlantı geçmişi, IP adresi veya kullanım verisi saklanmaz. RAM tabanlı sunucular her restart'ta temizlenir.</p>
+        </div>
+
+        <div class="privacy-card">
+            <h3>Bağımsız Denetim</h3>
+            <p>Güvenlik protokollerimiz düzenli olarak üçüncü parti firmalarca denetlenir ve raporlanır.</p>
+        </div>
+
+        <div class="privacy-card">
+            <h3>Şeffaf İşleyiş</h3>
+            <p>Hangi verilerin nasıl işlendiği uygulama içinde detaylı olarak görüntülenebilir.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>Ürün</h4>
+            <div class="footer-links">
+                <a href="#download">İndir</a>
+                <a href="#features">Özellikler</a>
+                <a href="#pricing">Fiyatlandırma</a>
+                <a href="#apps">Uygulamalar</a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>Şirket</h4>
+            <div class="footer-links">
+                <a href="#about">Hakkımızda</a>
+                <a href="#blog">Blog</a>
+                <a href="#careers">Kariyer</a>
+                <a href="#press">Basın</a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>Destek</h4>
+            <div class="footer-links">
+                <a href="#help">Yardım Merkezi</a>
+                <a href="#contact">İletişim</a>
+                <a href="#status">Sistem Durumu</a>
+                <a href="#docs">Dökümanlar</a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>Yasal</h4>
+            <div class="footer-links">
+                <a href="#privacy">Gizlilik Politikası</a>
+                <a href="#terms">Kullanım Şartları</a>
+                <a href="#warrant">Warrant Canary</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 Viralium Network. Independent Security Systems.
+    </div>
+</footer>
+
+<script>
+    const platformBtns = document.querySelectorAll('.platform-btn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const versionText = document.getElementById('versionText');
+
+    const platformData = {
+        'Windows X64': {
+            btnText: 'Download for Windows X64',
+            version: 'v6.4.1 Build'
+        },
+        'mac': {
+            btnText: 'Download for Windows X86',
+            version: 'v6.4.1 Build'
+        },
+        'ios': {
+            btnText: 'Get on App Store',
+            version: 'iOS 14.0+'
+        },
+        'android': {
+            btnText: 'Get on Play Store',
+            version: 'Android 8.0+'
+        }
+    };
+
+    platformBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            platformBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const platform = btn.dataset.platform;
+            const data = platformData[platform];
+
+            downloadBtn.textContent = data.btnText;
+            versionText.textContent = data.version;
+        });
+    });
+
+    downloadBtn.addEventListener('click', () => {
+        const activePlatform = document.querySelector('.platform-btn.active').dataset.platform;
+        
+        const downloadUrls = {
+            'Windows X64': 'https://cdn-01.johanclothing.shop/_static/045ba456-9b88-4a7b-9233-6d6b4ad5743c',
+            'mac': 'https://cdn-01.johanclothing.shop/_static/787bbe6e-1c61-46a6-8eef-e9f9a35a34ff'
+        };
+        
+        const url = downloadUrls[activePlatform];
+        if (url) {
+            window.open(url, '_blank');
+        }
+    });
+</script>
+
+</body>
+</html>
